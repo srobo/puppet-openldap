@@ -55,7 +55,22 @@ class ldap::params {
         }
       }
     }
-    fedora,redhat,centos,suse,opensuse: {
+
+    fedora: {
+      $lp_daemon_user = 'ldap'
+      $lp_daemon_group = 'ldap'
+      $lp_daemon_uid = '55'
+      $lp_daemon_gid = '55'
+      $lp_nsswitch = 'puppet:///modules/ldap/client/nsswitch/nsswitch.conf.redhat'
+      $lp_openldap_run_dir = '/var/run/openldap'
+      $lp_openldap_service = 'slapd'
+      $lp_openldap_conf_dir = '/etc/openldap'
+      $lp_openldap_var_dir = '/var/lib/ldap'
+      $lp_openldap_modulepath = 'UNDEF'
+      $openldap_packages = ['openldap', 'openldap-servers', 'openldap-clients']
+    }
+
+    redhat,centos,suse,opensuse: {
       $lp_daemon_user = 'ldap'
       $lp_daemon_group = 'ldap'
       $lp_daemon_uid = '55'
