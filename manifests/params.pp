@@ -102,4 +102,10 @@ class ldap::params {
   $lp_openldap_sizelimit    = '5000'
   $lp_openldap_tool_threads = '1'
   $lp_openldap_db_type      = 'bdb'
+
+  # Declare a virtual resource for openldap_packages being present. I've no idea
+  # how to parameterise other 'ensure' values.
+  @package { $openldap_packages:
+    ensure => 'present',
+  }
 }

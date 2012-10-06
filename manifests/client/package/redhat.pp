@@ -18,13 +18,15 @@ class ldap::client::package::redhat(
 ) {
   $redhat_packages = ['openldap', 'openldap-clients', 'nss_ldap']
   
-  @package { $redhat_packages:
-    ensure => $ensure,
-    tag    => 'redhat-openldap-client',
+  if $ensure == 'present' {
+    realize Package[$ldap::params::openldap_packages]
+  } else {
+    package { $ldap::params::openldap_packages :
+      ensure => $ensure,
+    }
   }
   
-  # Some packages are shared between Client/Server. In order to prevent
-  # a conflict, packages are virtualized and realized to be decleared
-  # once during a catalog compliation. 
-  Package <| tag == 'redhat-openldap-client' |>
+  package {'nss_ldap':
+    ensure => $ensure,
+  }
 }
