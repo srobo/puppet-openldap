@@ -108,4 +108,13 @@ class ldap::params {
   @package { $openldap_packages:
     ensure => 'present',
   }
+
+  # Also make the openldap directory  a virtual resource; we can generate some
+  # elaborate dependancy chains otherwise.
+  @file { "$lp_openldap_conf_dir":
+    ensure => directory,
+    mode => '755',
+    owner => 'root',
+    group => 'root',
+  }
 }

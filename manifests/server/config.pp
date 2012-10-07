@@ -111,10 +111,5 @@ class ldap::server::config (
     content => template('ldap/server/openldap/openldap_acl_rebuild.erb'),
   }
 
-  file {"${ldap::params::lp_openldap_conf_dir}":
-    ensure => directory,
-    mode   => '0755',
-    owner  => 'root',
-    group  => 'root',
-  }
+  realize File["${ldap::params::lp_openldap_conf_dir}"]
 }
