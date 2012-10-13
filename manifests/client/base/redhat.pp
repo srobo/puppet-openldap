@@ -24,6 +24,7 @@ class ldap::client::base::redhat(
   }
   
   $ensure_real = $ensure
+  $localloginok = $ldap::localloginok
   
   file { '/etc/nsswitch.conf':
     ensure  => file,

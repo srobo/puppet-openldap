@@ -57,7 +57,8 @@ class ldap(
   $ssl         = 'false',
   $ssl_ca      = '',
   $ssl_cert    = '',
-  $ssl_key     = ''
+  $ssl_key     = '',
+  $localloginok = 'false'
 ) {
   include stdlib
   include ldap::params

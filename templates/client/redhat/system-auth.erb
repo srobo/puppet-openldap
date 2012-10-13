@@ -6,6 +6,7 @@ auth        requisite     pam_succeed_if.so uid >= 500 quiet
 auth        required      pam_deny.so
 
 account     required      pam_unix.so broken_shadow
+<% if localloginok == 'true' %>account     sufficient    pam_localuser.so<%end%>
 account     sufficient    pam_succeed_if.so uid < 500 quiet
 <% if ensure_real == 'present' %>account     [default=bad success=ok user_unknown=ignore] pam_ldap.so<% end %>
 account     required      pam_permit.so
