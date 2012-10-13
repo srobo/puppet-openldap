@@ -20,6 +20,8 @@ class ldap::client::base(
 ) {
   $ensure_real = $ensure
 
+  $localloginok = $ldap::localloginok
+
   case $::osfamily {
     'RedHat': {
       file { '/etc/nsswitch.conf':

@@ -61,6 +61,7 @@ class ldap(
   $cn_config   = false,
   $rootdn      = undef,
   $rootpw      = undef,
+  $localloginok = false,
 ) {
   include stdlib
   include ldap::params
