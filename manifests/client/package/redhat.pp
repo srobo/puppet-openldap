@@ -16,17 +16,9 @@
 class ldap::client::package::redhat(
   $ensure
 ) {
-  $redhat_packages = ['openldap', 'openldap-clients', 'nss_ldap']
+  $redhat_packages = ['openldap-clients', 'nss_ldap']
   
-  if $ensure == 'present' {
-    realize Package[$ldap::params::openldap_packages]
-  } else {
-    package { $ldap::params::openldap_packages :
-      ensure => $ensure,
-    }
-  }
-  
-  package {'nss_ldap':
+  package{ [$redhat_packages]:
     ensure => $ensure,
   }
 }

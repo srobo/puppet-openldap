@@ -67,7 +67,7 @@ class ldap::params {
       $lp_openldap_conf_dir = '/etc/openldap'
       $lp_openldap_var_dir = '/var/lib/ldap'
       $lp_openldap_modulepath = 'UNDEF'
-      $openldap_packages = ['openldap', 'openldap-servers', 'openldap-clients']
+      $openldap_packages = ['openldap', 'openldap-servers']
     }
 
     redhat,centos,suse,opensuse: {
@@ -88,7 +88,7 @@ class ldap::params {
         }
         default: {
           # Default case is RHEL
-          $openldap_packages = ['openldap', 'openldap-servers', 'openldap-clients']
+          $openldap_packages = ['openldap', 'openldap-servers']
         }
       }
     }
@@ -103,13 +103,7 @@ class ldap::params {
   $lp_openldap_tool_threads = '1'
   $lp_openldap_db_type      = 'bdb'
 
-  # Declare a virtual resource for openldap_packages being present. I've no idea
-  # how to parameterise other 'ensure' values.
-  @package { $openldap_packages:
-    ensure => 'present',
-  }
-
-  # Also make the openldap directory  a virtual resource; we can generate some
+  # Make the openldap directory  a virtual resource; we can generate some
   # elaborate dependancy chains otherwise.
   @file { "$lp_openldap_conf_dir":
     ensure => directory,
