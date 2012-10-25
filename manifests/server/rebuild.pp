@@ -19,6 +19,7 @@ class ldap::server::rebuild {
     path        => '/bin:/sbin:/usr/bin:/usr/sbin',
     group       => $ldap::params::lp_openldap_user,
     refreshonly => 'true',
+    notify => Class['ldap::server::service'],
   }
   
   exec { 'rebuild-openldap-domains.conf':
