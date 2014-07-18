@@ -98,14 +98,24 @@ class ldap::params {
           $lp_openldap_service = 'ldap'
         } /^6\./: {
           $lp_openldap_service = 'slapd'
+        } default: {
+          if $::operatingsystem == 'Fedora' {
+            $lp_openldap_service = 'slapd'
+          }
         }
       }
       $openldap_packages = [
         'openldap', 'openldap-servers', 'openldap-clients'
       ]
-      $openldap_client_packages =  [
-        'openldap', 'openldap-clients', 'nss_ldap'
-      ]
+      if $::operatingsystem == 'Fedora' and $::operatingsystemrelease == 20 {
+        $openldap_client_packages =  [
+          'openldap', 'openldap-clients'
+        ]
+      } else {
+        $openldap_client_packages =  [
+          'openldap', 'openldap-clients', 'nss_ldap'
+        ]
+      }
     } 'Suse': {
       $openldap_packages = ['openldap2', 'libltdl7', 'openldap2-back-meta']
       $openldap_client_packages = [
