@@ -42,7 +42,8 @@ class ldap::server::config (
   file { "${ldap::params::lp_openldap_conf_dir}/slapd.conf":
     ensure  => file,
     group   => $ldap::params::lp_daemon_user,
-    content => template('ldap/server/openldap/slapd.conf.erb')
+    content => template('ldap/server/openldap/slapd.conf.erb'),
+    require => Package[$ldap::params::openldap_packages],
   }
 
   ## Directories to be used for File-Fragment Patterns.
