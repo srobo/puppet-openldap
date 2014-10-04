@@ -25,4 +25,12 @@ class ldap::client::service(
     hasrestart => true,
     hasstatus  => true,
   }
+
+  # XXX jmorse
+  if $::operatingsystem == 'Fedora' and $::operatingsystemrelease == 20 {
+    service { 'nslcd':
+      ensure     => 'running',
+      enable     => true,
+    }
+  }
 }
