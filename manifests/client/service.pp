@@ -14,16 +14,23 @@
 #
 # This class file is not called directly
 class ldap::client::service(
-  $ensure
 ) {
-  
+
   # TODO: Need to add a translation between passed 'ensure' to this service
-  # state. 
-  
+  # state
+
   service { 'nscd':
-    enable     => 'true',
     ensure     => 'running',
-    hasrestart => 'true',
-    hasstatus  => 'true',
+    enable     => true,
+    hasrestart => true,
+    hasstatus  => true,
+  }
+
+  # XXX jmorse
+  if $::operatingsystem == 'Fedora' and $::operatingsystemrelease == 20 {
+    service { 'nslcd':
+      ensure     => 'running',
+      enable     => true,
+    }
   }
 }

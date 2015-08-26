@@ -1,6 +1,6 @@
 # Class: ldap::server::openldap::base
 #
-# This class sets up universal defaults between all types of 
+# This class sets up universal defaults between all types of
 # Operating Systems for the Initializion of OpenLDAP.
 #
 # Parameters:
@@ -15,18 +15,26 @@
 #
 # This class file is not called directly.
 class ldap::server::config (
-  $ssl,
-  $ssl_ca,
-  $ssl_cert,
-  $ssl_key
+  $ssl       = false,
+  $ssl_ca    = undef,
+  $ssl_cert  = undef,
+  $ssl_key   = undef,
+  $cn_config = undef,
+  $rootdn    = undef,
+  $rootpw    = undef,
 ) {
+  include 'ldap::params'
+
+  # Give me dat password to go with all the things
+  if $rootdn { validate_string($rootpw) }
+
   File {
     owner => 'root',
     group => $ldap::params::lp_daemon_group,
     mode  => '0640',
   }
 
-  file { "/etc/ldap-server":
+  file { '/etc/ldap-server':
     ensure  => file,
     content => 'openldap',
   }
@@ -34,10 +42,11 @@ class ldap::server::config (
   file { "${ldap::params::lp_openldap_conf_dir}/slapd.conf":
     ensure  => file,
     group   => $ldap::params::lp_daemon_user,
-    content => template('ldap/server/openldap/slapd.conf.erb')
+    content => template('ldap/server/openldap/slapd.conf.erb'),
+    require => Package[$ldap::params::openldap_packages],
   }
 
-  ## Directories to be used for File-Fragment Patterns. 
+  ## Directories to be used for File-Fragment Patterns.
   ## Contained in this directory for permissions concerns.
   file { "${ldap::params::lp_openldap_conf_dir}/replication":
     ensure  => directory,
@@ -49,7 +58,7 @@ class ldap::server::config (
     purge   => true,
     recurse => true,
   }
-  file { "${ldap::params::lp_tmp_dir}":
+  file { $ldap::params::lp_tmp_dir:
     ensure  => directory,
   }
   file { "${ldap::params::lp_tmp_dir}/schema.d":
@@ -74,7 +83,7 @@ class ldap::server::config (
   }
   file {"${ldap::params::lp_openldap_conf_dir}/slapd.d":
     ensure => 'absent',
-    force  => 'true',
+    force  => true,
   }
 
   # These files are here to ensure that a blank file exists
@@ -111,5 +120,10 @@ class ldap::server::config (
     content => template('ldap/server/openldap/openldap_acl_rebuild.erb'),
   }
 
-  realize File["${ldap::params::lp_openldap_conf_dir}"]
+  file {$ldap::params::lp_openldap_conf_dir:
+    ensure => directory,
+    mode   => '0755',
+    owner  => 'root',
+    group  => 'root',
+  }
 }
