@@ -107,7 +107,7 @@ class ldap::params {
       $openldap_packages = [
         'openldap', 'openldap-servers', 'openldap-clients'
       ]
-      if $::operatingsystem == 'Fedora' and $::operatingsystemrelease == 20 {
+      if $::operatingsystem == 'Fedora' and versioncmp($::operatingsystemrelease, '20') >= 0 {
         $openldap_client_packages =  [
           'openldap', 'openldap-clients', 'nscd', 'nss-pam-ldapd'
         ]
